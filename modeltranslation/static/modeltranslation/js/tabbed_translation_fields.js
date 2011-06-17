@@ -3,7 +3,8 @@
 var google, django, gettext;
 
 (function () {
-    $(document).ready( function () {
+    var jQuery = django.jQuery || jQuery || $;
+    jQuery(function ($) {
         function getGroupedTranslationFields() {
             /** Returns a grouped set of all text based model translation fields.
              * The returned datastructure will look something like this:
@@ -24,14 +25,8 @@ var google, django, gettext;
               grouped_translations = {};
 
             translation_fields.each(function (i, el) {
-                var name = $(el).attr('name').split('_',2),
+                var name = $(el).attr('name').split('_'),
                   lang = name.pop();
-
-                var parts = $(el).attr('name').split('_');
-                for(i=2; i<parts.length; i++){
-		    lang = lang+'-'+parts[i];
-		}
-
                 name = name.join('_');
                 if (!grouped_translations[name]) {
                     grouped_translations[name] = {};
@@ -102,7 +97,8 @@ var google, django, gettext;
             $('#content h1').append('&nbsp;').append(select);
         }
 
-        createMainSwitch(createTabs());
-
+        if ($('body').hasClass('change-form')) {
+            createMainSwitch(createTabs());
+        }
     });
 }());
